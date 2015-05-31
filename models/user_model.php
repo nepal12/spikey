@@ -77,6 +77,7 @@ class User_Model extends Model {
 
                     if ($remember) {
                         $hash = Hash::unique();
+                     
                         $hashCheck = $this->_db->get('users_session', array('user_id', '=', $this->data()->uid));
 
                         if (!$hashCheck->count()) {

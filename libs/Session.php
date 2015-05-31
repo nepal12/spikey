@@ -31,7 +31,7 @@ class Session {
      * @param type $name
      * @return the session value
      */
-    public function get($name) {
+    public static function get($name) {
         return $_SESSION[$name];
     }
     

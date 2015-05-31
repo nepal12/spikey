@@ -13,29 +13,64 @@ class User extends Controller {
     public function __construct() {
         parent::__construct();
     }
-    
+
     /**
      * Index Mothod
      */
     public function index() {
-        
+        die();
     }
 
-    
-    
     /**
      * Logout Method
      */
-    public function logout(){
+    public function logout() {
         $this->model->logout();
         Redirect::to(URL);
     }
-    
+
     /*
      * Login Function inside the User Controller
      */
+
     public function login() {
-        $this->view->render('users/login');
+        $this->view->render('user/login');
+    }
+    
+    /**
+     * Login Authentication Process
+     */
+    public function authenticate() {
+        if (Input::exists()) {
+            if (Token::check(Input::get('token'))) {
+                $validate = new Validation();
+                $validation = $validate->check($_POST, array(
+                    'username' => array(
+                        'required' => true
+                    ),
+                    'password' => array(
+                        'required' => true
+                    ),
+                ));
+
+                if ($validation->passed()) {
+                    
+                    $remember = (Input::get('remember') === 'on') ? true : false;
+                    $login = $this->model->login(Input::get('username'), Input::get('password'), $remember);
+
+                    if ($login) {
+                        Session::flash('home','Welcome back ' . $this->model->data()->username);
+                        Redirect::to(URL);
+                    } else {
+                        echo "sorry! Failed";
+                    }
+                } else {
+                    foreach ($validation->errors() as $error) {
+                        echo $error, '<br />';
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -108,5 +143,4 @@ class User extends Controller {
         }
     }
 
-   
 }

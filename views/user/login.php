@@ -6,7 +6,7 @@
  * @author Ritesh Rijal(riteshrijal@yahoo.com) 
  */
 ?>
-<form action="<?php ?>" method="post">
+<form action="<?php echo URL;?>user/authenticate" method="post">
 	<div class="field">
 		<label for="username">Username</label>
 		<input type="text" name="username" id="username" autocomplete="off">
